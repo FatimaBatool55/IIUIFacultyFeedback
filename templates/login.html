@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>IIUI Email Verification</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>IIUI Faculty Feedback System</h1>
+
+    <p class="intro">
+
+        Welcome to the IIUI Faculty Feedback System.
+
+        To ensure that only enrolled students can submit feedback, you must first verify your official IIUI email address.
+
+        A One-Time Password (OTP) will be sent to your email. After successful verification, you will be allowed to access the feedback form.
+
+    </p>
+
+    {% if error %}
+
+        <p class="error">{{ error }}</p>
+
+    {% endif %}
+
+    <form action="/send-otp" method="POST">
+
+        <label>IIUI Email Address</label>
+
+        <input
+                type="email"
+                name="student_email"
+                placeholder="example@iiu.edu.pk"
+                required>
+
+        <button type="submit">
+
+            Send Verification OTP
+
+        </button>
+
+    </form>
+
+</div>
+
+</body>
+
+</html>

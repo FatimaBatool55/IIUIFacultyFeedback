@@ -36,13 +36,17 @@ def send_otp_route():
 
     # Only IIUI emails allowed
 
-    if not student_email.endswith("@iiu.edu.pk"):
+    allowed_domains = (
+    "@student.iiu.edu.pk",
+    "@iiu.edu.pk"
+)
 
-        return render_template(
-            "login.html",
-            error="Only official IIUI email addresses are allowed."
-        )
+if not student_email.endswith(allowed_domains):
 
+    return render_template(
+        "login.html",
+        error="Please use your official IIUI email."
+    )
     otp = generate_otp()
 
     session["otp"] = otp

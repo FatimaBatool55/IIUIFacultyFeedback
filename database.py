@@ -1,9 +1,13 @@
 import sqlite3
 
 
+def get_connection():
+    return sqlite3.connect("feedback.db")
+
+
 def create_database():
 
-    connection = sqlite3.connect("feedback.db")
+    connection = get_connection()
 
     cursor = connection.cursor()
 
@@ -12,19 +16,21 @@ def create_database():
 
         id INTEGER PRIMARY KEY AUTOINCREMENT,
 
-        student_name TEXT,
+        student_name TEXT NOT NULL,
 
-        student_email TEXT,
+        student_email TEXT UNIQUE NOT NULL,
 
-        faculty_rating TEXT,
+        anonymous TEXT,
 
-        course_rating TEXT,
+        faculty_rating INTEGER,
 
-        facilities_rating TEXT,
+        course_rating INTEGER,
 
-        administration_rating TEXT,
+        facilities_rating INTEGER,
 
-        overall_rating TEXT,
+        administration_rating INTEGER,
+
+        overall_rating INTEGER,
 
         comments TEXT
 
@@ -36,18 +42,42 @@ def create_database():
     connection.close()
 
 
+def email_exists(student_email):
+
+    connection = get_connection()
+
+    cursor = connection.cursor()
+
+    cursor.execute(
+
+        "SELECT id FROM feedback WHERE student_email=?",
+
+        (student_email,)
+
+    )
+
+    result = cursor.fetchone()
+
+    connection.close()
+
+    return result is not None
+
+
 def save_feedback(
+
         student_name,
         student_email,
+        anonymous,
         faculty_rating,
         course_rating,
         facilities_rating,
         administration_rating,
         overall_rating,
         comments
+
 ):
 
-    connection = sqlite3.connect("feedback.db")
+    connection = get_connection()
 
     cursor = connection.cursor()
 
@@ -56,33 +86,76 @@ def save_feedback(
     INSERT INTO feedback(
 
         student_name,
+
         student_email,
+
+        anonymous,
+
         faculty_rating,
+
         course_rating,
+
         facilities_rating,
+
         administration_rating,
+
         overall_rating,
+
         comments
 
     )
 
-    VALUES(?,?,?,?,?,?,?,?)
+    VALUES(?,?,?,?,?,?,?,?,?)
 
     """,
 
-                   (
+    (
 
-                       student_name,
-                       student_email,
-                       faculty_rating,
-                       course_rating,
-                       facilities_rating,
-                       administration_rating,
-                       overall_rating,
-                       comments
+        student_name,
 
-                   ))
+        student_email,
+
+        anonymous,
+
+        faculty_rating,
+
+        course_rating,
+
+        facilities_rating,
+
+        administration_rating,
+
+        overall_rating,
+
+        comments
+
+    )
+
+    )
 
     connection.commit()
 
     connection.close()
+
+
+def get_all_feedback():
+
+    connection = get_connection()
+
+    cursor = connection.cursor()
+
+    cursor.execute("""
+
+    SELECT *
+
+    FROM feedback
+
+    ORDER BY id DESC
+
+    """)
+
+    data = cursor.fetchall()
+
+    connection.close()
+
+    return data

@@ -1,47 +1,99 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, session
 
 import re
 
-from database import (
-    create_database,
-    save_feedback,
-    email_exists
-)
-
+from database import create_database, save_feedback
 from email_service import (
     send_thank_you,
-    send_admin_notification
+    send_admin_notification,
+    generate_otp,
+    send_otp
 )
 
 app = Flask(__name__)
 
+app.secret_key = "iiui_feedback_secret_key"
+
 create_database()
 
 
-# ------------------------------
-# Home Page
-# ------------------------------
-
+# -----------------------------
+# Login Page
+# -----------------------------
 @app.route("/")
-def home():
-    return render_template(
-        "index.html",
-        error=""
-    )
+def login():
+
+    return render_template("login.html")
 
 
-# ------------------------------
+# -----------------------------
+# Send OTP
+# -----------------------------
+@app.route("/send-otp", methods=["POST"])
+def send_otp_route():
+
+    student_email = request.form["student_email"].strip().lower()
+
+    # Only IIUI emails allowed
+
+    if not student_email.endswith("@iiu.edu.pk"):
+
+        return render_template(
+            "login.html",
+            error="Only official IIUI email addresses are allowed."
+        )
+
+    otp = generate_otp()
+
+    session["otp"] = otp
+
+    session["student_email"] = student_email
+
+    send_otp(student_email, otp)
+
+    return render_template("verify_otp.html")
+
+
+# -----------------------------
+# Verify OTP
+# -----------------------------
+@app.route("/verify", methods=["POST"])
+def verify():
+
+    entered_otp = request.form["otp"]
+
+    if entered_otp != session.get("otp"):
+
+        return render_template(
+            "verify_otp.html",
+            error="Invalid OTP. Please try again."
+        )
+
+    return redirect("/feedback")
+
+
+# -----------------------------
+# Feedback Form
+# -----------------------------
+@app.route("/feedback")
+def feedback():
+
+    if "student_email" not in session:
+
+        return redirect("/")
+
+    return render_template("index.html")
+
+
+# -----------------------------
 # Submit Feedback
-# ------------------------------
-
+# -----------------------------
 @app.route("/submit", methods=["POST"])
 def submit():
 
     student_name = request.form["student_name"].strip()
 
-    student_email = request.form["student_email"].strip().lower()
-
-    anonymous = request.form.get("anonymous")
+    student_email = session.get("student_email")
 
     faculty_rating = request.form["faculty_rating"]
 
@@ -53,163 +105,57 @@ def submit():
 
     overall_rating = request.form["overall_rating"]
 
-    comments = request.form["comments"].strip()
+    comments = request.form["comments"]
 
-    # ----------------------------------------
     # Name Validation
-    # ----------------------------------------
 
-    if not re.fullmatch(r"[A-Za-z ]{3,60}", student_name):
-
-        return render_template(
-            "index.html",
-            error="Student name must contain only letters and spaces."
-        )
-
-    # ----------------------------------------
-    # IIUI Email Validation
-    # ----------------------------------------
-
-    if not student_email.endswith("@iiu.edu.pk"):
+    if not re.fullmatch(r"[A-Za-z ]{3,50}", student_name):
 
         return render_template(
             "index.html",
-            error="Only IIUI email addresses are allowed."
+            error="Enter a valid name using letters only."
         )
-
-    # ----------------------------------------
-    # Email Format Validation
-    # ----------------------------------------
-
-    email_pattern = r'^[A-Za-z0-9._%+-]+@iiu\.edu\.pk$'
-
-    if not re.fullmatch(email_pattern, student_email):
-
-        return render_template(
-            "index.html",
-            error="Enter a valid IIUI email address."
-        )
-
-    # ----------------------------------------
-    # Duplicate Feedback Check
-    # ----------------------------------------
-
-    if email_exists(student_email):
-
-        return render_template(
-            "index.html",
-            error="Feedback has already been submitted using this email."
-        )
-
-    # ----------------------------------------
-    # Comments Validation
-    # ----------------------------------------
-
-    if len(comments) < 10:
-
-        return render_template(
-            "index.html",
-            error="Comments should contain at least 10 characters."
-        )
-
-    # ----------------------------------------
-    # Anonymous Feedback
-    # ----------------------------------------
-
-    if anonymous == "yes":
-
-        display_name = "Anonymous"
-
-        anonymous_value = "Yes"
-
-    else:
-
-        display_name = student_name
-
-        anonymous_value = "No"
-
-    # ----------------------------------------
-    # Save Feedback
-    # ----------------------------------------
 
     save_feedback(
-
         student_name,
-
         student_email,
-
-        anonymous_value,
-
         faculty_rating,
-
         course_rating,
-
         facilities_rating,
-
         administration_rating,
-
         overall_rating,
-
         comments
-
     )
-
-    # ----------------------------------------
-    # Send Thank You Email
-    # ----------------------------------------
 
     send_thank_you(
-
         student_email,
-
         student_name
-
     )
-
-    # ----------------------------------------
-    # Notify Administrator
-    # ----------------------------------------
 
     send_admin_notification(
-
-        display_name,
-
+        student_name,
         student_email,
-
         faculty_rating,
-
         course_rating,
-
         facilities_rating,
-
         administration_rating,
-
         overall_rating,
-
         comments
-
     )
+
+    session.clear()
 
     return redirect("/success")
 
 
-# ------------------------------
+# -----------------------------
 # Success Page
-# ------------------------------
-
+# -----------------------------
 @app.route("/success")
 def success():
 
-    return render_template(
-        "success.html"
-    )
+    return render_template("success.html")
 
-
-# ------------------------------
-# Run Application
-# ------------------------------
 
 if __name__ == "__main__":
-    app.run(
-        debug=True
-    )
+    app.run(debug=True)

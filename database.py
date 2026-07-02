@@ -5,6 +5,10 @@ DATABASE_URL = os.environ.get("DATABASE_URL")
 
 
 def get_connection():
+
+    if not DATABASE_URL:
+        raise Exception("DATABASE_URL environment variable is missing.")
+
     return psycopg2.connect(DATABASE_URL)
 
 

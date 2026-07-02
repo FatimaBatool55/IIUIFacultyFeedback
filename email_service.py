@@ -13,7 +13,12 @@ APP_PASSWORD = "ngmn bpob qpyq klxh"
 # ---------------------------------------
 
 def send_thank_you(student_email, student_name):
-
+try:
+    with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
+        smtp.login(SENDER_EMAIL, APP_PASSWORD)
+        smtp.send_message(message)
+except Exception as e:
+    print("EMAIL ERROR:", e)
     message = EmailMessage()
 
     message["Subject"] = "Thank You - IIUI Faculty Feedback"
@@ -51,7 +56,12 @@ Faculty Feedback Committee
 # ---------------------------------------
 
 def send_admin_notification(
-
+try:
+    with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
+        smtp.login(SENDER_EMAIL, APP_PASSWORD)
+        smtp.send_message(message)
+except Exception as e:
+    print("EMAIL ERROR:", e)
         student_name,
 
         student_email,
@@ -126,7 +136,12 @@ This email was generated automatically by the IIUI Faculty Feedback System.
 # ---------------------------------------
 
 def generate_otp():
-
+try:
+    with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
+        smtp.login(SENDER_EMAIL, APP_PASSWORD)
+        smtp.send_message(message)
+except Exception as e:
+    print("EMAIL ERROR:", e)
     otp = ""
 
     for i in range(6):

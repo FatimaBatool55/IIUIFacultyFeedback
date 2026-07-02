@@ -9,7 +9,7 @@ from email_service import (
     generate_otp,
     send_otp
 )
-os.environ["DATABASE_URL"] = "postgresql://postgres:[Zahrabatool125]@db.zhzgazulyzoppkfgfqgb.supabase.co:5432/postgres"
+
 app = Flask(__name__)
 
 app.secret_key = "iiui_feedback_secret_key"

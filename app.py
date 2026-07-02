@@ -117,21 +117,21 @@ def submit():
         comments
     )
 
-    send_thank_you(
-        student_email,
-        student_name
-    )
+    # send_thank_you(
+#     student_email,
+#     student_name
+# )
 
-    send_admin_notification(
-        student_name,
-        student_email,
-        faculty_rating,
-        course_rating,
-        facilities_rating,
-        administration_rating,
-        overall_rating,
-        comments
-    )
+# send_admin_notification(
+#     student_name,
+#     student_email,
+#     faculty_rating,
+#     course_rating,
+#     facilities_rating,
+#     administration_rating,
+#     overall_rating,
+#     comments
+# )
 
     session.clear()
 

@@ -71,3 +71,38 @@ button {
 button:hover {
     background: #004d26;
 }
+.error{
+
+    margin-top:20px;
+
+    background:#ffe5e5;
+
+    color:#c40000;
+
+    padding:12px;
+
+    border-radius:6px;
+
+    text-align:center;
+
+    font-weight:bold;
+
+}
+
+.success{
+
+    margin-top:20px;
+
+    background:#e8ffe8;
+
+    color:#006600;
+
+    padding:12px;
+
+    border-radius:6px;
+
+    text-align:center;
+
+    font-weight:bold;
+
+}

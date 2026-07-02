@@ -28,7 +28,11 @@
         Your honest feedback helps IIUI improve teaching quality and student services.
 
     </p>
+{% if error %}
 
+<p class="error">{{ error }}</p>
+
+{% endif %}
     <form action="/submit" method="POST">
 
         <label>Student Name</label>

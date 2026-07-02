@@ -12,7 +12,7 @@ from email_service import (
 app = Flask(__name__)
 app.secret_key = "iiui_feedback_secret_key"
 
-create_database()
+
 
 
 # -----------------------------

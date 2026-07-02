@@ -10,29 +10,27 @@ from email_service import (
 )
 
 app = Flask(__name__)
-
 app.secret_key = "iiui_feedback_secret_key"
 
 create_database()
 
 
-# ----------------------------------
+# -----------------------------
 # Login Page
-# ----------------------------------
+# -----------------------------
 @app.route("/")
 def login():
     return render_template("login.html")
 
 
-# ----------------------------------
+# -----------------------------
 # Send OTP
-# ----------------------------------
+# -----------------------------
 @app.route("/send-otp", methods=["POST"])
 def send_otp_route():
 
     student_email = request.form["student_email"].strip().lower()
 
-    # Only official IIUI emails allowed
     allowed_domains = (
         "@student.iiu.edu.pk",
         "@iiu.edu.pk"
@@ -54,9 +52,9 @@ def send_otp_route():
     return render_template("verify_otp.html")
 
 
-# ----------------------------------
+# -----------------------------
 # Verify OTP
-# ----------------------------------
+# -----------------------------
 @app.route("/verify", methods=["POST"])
 def verify():
 
@@ -71,9 +69,9 @@ def verify():
     return redirect("/feedback")
 
 
-# ----------------------------------
+# -----------------------------
 # Feedback Form
-# ----------------------------------
+# -----------------------------
 @app.route("/feedback")
 def feedback():
 
@@ -83,13 +81,14 @@ def feedback():
     return render_template("index.html")
 
 
-# ----------------------------------
+# -----------------------------
 # Submit Feedback
-# ----------------------------------
+# -----------------------------
 @app.route("/submit", methods=["POST"])
 def submit():
 
     student_name = request.form["student_name"].strip()
+
     student_email = session.get("student_email")
 
     faculty_rating = request.form["faculty_rating"]
@@ -97,9 +96,10 @@ def submit():
     facilities_rating = request.form["facilities_rating"]
     administration_rating = request.form["administration_rating"]
     overall_rating = request.form["overall_rating"]
+
     comments = request.form["comments"]
 
-    # Validate name
+    # Validate student name
     if not re.fullmatch(r"[A-Za-z ]{3,50}", student_name):
         return render_template(
             "index.html",
@@ -138,9 +138,9 @@ def submit():
     return redirect("/success")
 
 
-# ----------------------------------
+# -----------------------------
 # Success Page
-# ----------------------------------
+# -----------------------------
 @app.route("/success")
 def success():
     return render_template("success.html")

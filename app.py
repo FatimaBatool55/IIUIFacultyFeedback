@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request, redirect, session
-import os
 import re
 
 from database import create_database, save_feedback
@@ -17,40 +16,37 @@ app.secret_key = "iiui_feedback_secret_key"
 create_database()
 
 
-# -----------------------------
+# ----------------------------------
 # Login Page
-# -----------------------------
+# ----------------------------------
 @app.route("/")
 def login():
-
     return render_template("login.html")
 
 
-# -----------------------------
+# ----------------------------------
 # Send OTP
-# -----------------------------
+# ----------------------------------
 @app.route("/send-otp", methods=["POST"])
 def send_otp_route():
 
     student_email = request.form["student_email"].strip().lower()
 
-    # Only IIUI emails allowed
-
+    # Only official IIUI emails allowed
     allowed_domains = (
-    "@student.iiu.edu.pk",
-    "@iiu.edu.pk"
-)
-
-if not student_email.endswith(allowed_domains):
-
-    return render_template(
-        "login.html",
-        error="Please use your official IIUI email."
+        "@student.iiu.edu.pk",
+        "@iiu.edu.pk"
     )
+
+    if not student_email.endswith(allowed_domains):
+        return render_template(
+            "login.html",
+            error="Please use your official IIUI email."
+        )
+
     otp = generate_otp()
 
     session["otp"] = otp
-
     session["student_email"] = student_email
 
     send_otp(student_email, otp)
@@ -58,16 +54,15 @@ if not student_email.endswith(allowed_domains):
     return render_template("verify_otp.html")
 
 
-# -----------------------------
+# ----------------------------------
 # Verify OTP
-# -----------------------------
+# ----------------------------------
 @app.route("/verify", methods=["POST"])
 def verify():
 
-    entered_otp = request.form["otp"]
+    entered_otp = request.form["otp"].strip()
 
     if entered_otp != session.get("otp"):
-
         return render_template(
             "verify_otp.html",
             error="Invalid OTP. Please try again."
@@ -76,45 +71,36 @@ def verify():
     return redirect("/feedback")
 
 
-# -----------------------------
+# ----------------------------------
 # Feedback Form
-# -----------------------------
+# ----------------------------------
 @app.route("/feedback")
 def feedback():
 
     if "student_email" not in session:
-
         return redirect("/")
 
     return render_template("index.html")
 
 
-# -----------------------------
+# ----------------------------------
 # Submit Feedback
-# -----------------------------
+# ----------------------------------
 @app.route("/submit", methods=["POST"])
 def submit():
 
     student_name = request.form["student_name"].strip()
-
     student_email = session.get("student_email")
 
     faculty_rating = request.form["faculty_rating"]
-
     course_rating = request.form["course_rating"]
-
     facilities_rating = request.form["facilities_rating"]
-
     administration_rating = request.form["administration_rating"]
-
     overall_rating = request.form["overall_rating"]
-
     comments = request.form["comments"]
 
-    # Name Validation
-
+    # Validate name
     if not re.fullmatch(r"[A-Za-z ]{3,50}", student_name):
-
         return render_template(
             "index.html",
             error="Enter a valid name using letters only."
@@ -152,12 +138,11 @@ def submit():
     return redirect("/success")
 
 
-# -----------------------------
+# ----------------------------------
 # Success Page
-# -----------------------------
+# ----------------------------------
 @app.route("/success")
 def success():
-
     return render_template("success.html")
 
 

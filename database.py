@@ -1,8 +1,11 @@
-import sqlite3
+import os
+import psycopg2
+
+DATABASE_URL = os.environ.get("DATABASE_URL")
 
 
 def get_connection():
-    return sqlite3.connect("feedback.db")
+    return psycopg2.connect(DATABASE_URL)
 
 
 def create_database():
@@ -14,23 +17,21 @@ def create_database():
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS feedback(
 
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        id SERIAL PRIMARY KEY,
 
-        student_name TEXT NOT NULL,
+        student_name TEXT,
 
-        student_email TEXT UNIQUE NOT NULL,
+        student_email TEXT,
 
-        anonymous TEXT,
+        faculty_rating TEXT,
 
-        faculty_rating INTEGER,
+        course_rating TEXT,
 
-        course_rating INTEGER,
+        facilities_rating TEXT,
 
-        facilities_rating INTEGER,
+        administration_rating TEXT,
 
-        administration_rating INTEGER,
-
-        overall_rating INTEGER,
+        overall_rating TEXT,
 
         comments TEXT
 
@@ -39,42 +40,20 @@ def create_database():
 
     connection.commit()
 
-    connection.close()
-
-
-def email_exists(student_email):
-
-    connection = get_connection()
-
-    cursor = connection.cursor()
-
-    cursor.execute(
-
-        "SELECT id FROM feedback WHERE student_email=?",
-
-        (student_email,)
-
-    )
-
-    result = cursor.fetchone()
+    cursor.close()
 
     connection.close()
-
-    return result is not None
 
 
 def save_feedback(
-
         student_name,
         student_email,
-        anonymous,
         faculty_rating,
         course_rating,
         facilities_rating,
         administration_rating,
         overall_rating,
         comments
-
 ):
 
     connection = get_connection()
@@ -86,76 +65,35 @@ def save_feedback(
     INSERT INTO feedback(
 
         student_name,
-
         student_email,
-
-        anonymous,
-
         faculty_rating,
-
         course_rating,
-
         facilities_rating,
-
         administration_rating,
-
         overall_rating,
-
         comments
 
     )
 
-    VALUES(?,?,?,?,?,?,?,?,?)
+    VALUES(%s,%s,%s,%s,%s,%s,%s,%s)
 
     """,
 
     (
 
         student_name,
-
         student_email,
-
-        anonymous,
-
         faculty_rating,
-
         course_rating,
-
         facilities_rating,
-
         administration_rating,
-
         overall_rating,
-
         comments
 
-    )
-
-    )
+    ))
 
     connection.commit()
 
-    connection.close()
-
-
-def get_all_feedback():
-
-    connection = get_connection()
-
-    cursor = connection.cursor()
-
-    cursor.execute("""
-
-    SELECT *
-
-    FROM feedback
-
-    ORDER BY id DESC
-
-    """)
-
-    data = cursor.fetchall()
+    cursor.close()
 
     connection.close()
-
-    return data

@@ -1,41 +1,727 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Feedback Submitted</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-    <!-- IIUI BANNER -->
-    <div class="iiui-banner">
-        <div class="iiui-brand">
-            <div class="iiui-logo">
-                <div class="iiui-logo-circle">
-                    <span class="logo-main">IIUI</span>
-                    <span class="logo-sub">Islamic University</span>
-                    <span class="logo-star">✦ ✦ ✦</span>
-                </div>
-            </div>
-            <div class="iiui-name">
-                <div class="uni-name">International Islamic University</div>
-                <div class="uni-name-arabic">الجامعة الإسلامية العالمية، إسلام آباد</div>
-            </div>
-        </div>
-        <div class="iiui-campus">
-            <div class="campus-name">ISLAMABAD</div>
-            <div class="campus-sub"><span class="gold-text">✦</span> PAKISTAN <span class="gold-text">✦</span></div>
-        </div>
-    </div>
+/* ============================================
+   styles.css - IIUI Faculty Feedback System
+   Official IIUI Green & White Theme with Logo
+   ============================================ */
 
-    <div class="container">
-        <h1>Thank You!</h1>
-        <p class="intro">
-            Your feedback has been submitted successfully.
-            Thank you for taking the time to help improve the quality of education at IIUI.
-        </p>
-        <a href="/">
-            <button>Submit Another Feedback</button>
-        </a>
-    </div>
-</body>
-</html>
+/* ---------- CSS Variables & Reset ---------- */
+:root {
+    --iiui-green: #006837;
+    --iiui-green-light: #008847;
+    --iiui-green-dark: #004d28;
+    --iiui-green-pale: #e8f5ee;
+    --iiui-green-bg: #f0f7f3;
+    --white: #ffffff;
+    --off-white: #fafcfa;
+    --black: #1a1a1a;
+    --text-dark: #222222;
+    --text-muted: #4a4a4a;
+    --gold: #c9a84c;
+    --gold-light: #e8d5a3;
+    --shadow: 0 20px 60px rgba(0, 104, 55, 0.15);
+    --shadow-hover: 0 30px 80px rgba(0, 104, 55, 0.25);
+    --radius: 16px;
+    --radius-sm: 10px;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', 'Arial', system-ui, -apple-system, sans-serif;
+    background: var(--iiui-green-bg);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 20px;
+    background-image: 
+        radial-gradient(circle at 10% 20%, rgba(0, 104, 55, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 90% 80%, rgba(0, 104, 55, 0.03) 0%, transparent 50%);
+}
+
+/* ---------- Container - 3D Card Effect ---------- */
+.container {
+    background: var(--white);
+    max-width: 850px;
+    width: 100%;
+    padding: 40px 45px 45px 45px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    transform: perspective(1000px) rotateX(0deg) rotateY(0deg);
+    transition: var(--transition);
+    position: relative;
+    border: 1px solid rgba(0, 104, 55, 0.08);
+}
+
+/* 3D depth effect on hover */
+.container:hover {
+    transform: perspective(1000px) rotateX(1.5deg) rotateY(-0.5deg);
+    box-shadow: var(--shadow-hover);
+}
+
+/* IIUI Green border glow */
+.container::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: var(--radius);
+    background: linear-gradient(135deg, var(--iiui-green), var(--gold), var(--iiui-green));
+    z-index: -1;
+    opacity: 0.10;
+    filter: blur(8px);
+    transition: var(--transition);
+}
+
+.container:hover::before {
+    opacity: 0.20;
+    filter: blur(12px);
+}
+
+/* ============================================
+   IIUI OFFICIAL BANNER / HEADER
+   ============================================ */
+.iiui-banner {
+    background: linear-gradient(135deg, var(--iiui-green-dark), var(--iiui-green), var(--iiui-green-dark));
+    margin: -40px -45px 25px -45px;
+    padding: 20px 35px;
+    border-radius: var(--radius) var(--radius) 0 0;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 15px;
+    border-bottom: 4px solid var(--gold);
+}
+
+/* Gold accent line at bottom of banner */
+.iiui-banner::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold));
+}
+
+/* Decorative pattern overlay */
+.iiui-banner::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: 
+        radial-gradient(circle at 15% 30%, rgba(255,255,255,0.05) 0%, transparent 60%),
+        radial-gradient(circle at 85% 70%, rgba(255,255,255,0.03) 0%, transparent 60%);
+    pointer-events: none;
+}
+
+/* Left side: Logo + University Name */
+.iiui-brand {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    z-index: 1;
+    flex-shrink: 0;
+}
+
+/* IIUI Logo - Official Style */
+.iiui-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.iiui-logo-circle {
+    width: 62px;
+    height: 62px;
+    background: var(--white);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+    border: 3px solid var(--gold);
+    position: relative;
+    padding: 6px;
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+}
+
+.iiui-logo-circle:hover {
+    transform: scale(1.05) rotate(-3deg);
+}
+
+.iiui-logo-circle .logo-main {
+    font-size: 16px;
+    font-weight: 900;
+    color: var(--iiui-green);
+    line-height: 1;
+    letter-spacing: 1px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.iiui-logo-circle .logo-sub {
+    font-size: 7px;
+    font-weight: 600;
+    color: var(--iiui-green-dark);
+    line-height: 1.1;
+    text-align: center;
+    letter-spacing: 0.5px;
+    margin-top: 1px;
+}
+
+.iiui-logo-circle .logo-star {
+    color: var(--gold);
+    font-size: 6px;
+    letter-spacing: 2px;
+    margin-top: 1px;
+}
+
+/* University Name */
+.iiui-name {
+    z-index: 1;
+}
+
+.iiui-name .uni-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.2;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    letter-spacing: 0.3px;
+}
+
+.iiui-name .uni-name-arabic {
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.80);
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Right side: IIUI Islamabad text */
+.iiui-campus {
+    z-index: 1;
+    text-align: right;
+    flex-shrink: 0;
+}
+
+.iiui-campus .campus-name {
+    font-size: 1.0rem;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: 2px;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+
+.iiui-campus .campus-sub {
+    font-size: 0.6rem;
+    color: rgba(255,255,255,0.70);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-top: 2px;
+}
+
+.iiui-campus .campus-sub .gold-text {
+    color: var(--gold);
+    font-weight: 600;
+}
+
+/* ---------- Responsive Banner ---------- */
+@media (max-width: 768px) {
+    .iiui-banner {
+        flex-direction: column;
+        text-align: center;
+        padding: 16px 20px;
+        margin: -30px -22px 20px -22px;
+    }
+
+    .iiui-brand {
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+    }
+
+    .iiui-name .uni-name {
+        font-size: 0.95rem;
+    }
+
+    .iiui-name .uni-name-arabic {
+        font-size: 0.65rem;
+    }
+
+    .iiui-campus {
+        text-align: center;
+        width: 100%;
+    }
+
+    .iiui-campus .campus-name {
+        font-size: 0.85rem;
+    }
+
+    .iiui-logo-circle {
+        width: 54px;
+        height: 54px;
+    }
+
+    .iiui-logo-circle .logo-main {
+        font-size: 14px;
+    }
+
+    .iiui-logo-circle .logo-sub {
+        font-size: 6px;
+    }
+}
+
+@media (max-width: 480px) {
+    .iiui-banner {
+        padding: 12px 14px;
+        margin: -20px -14px 16px -14px;
+        border-radius: 12px 12px 0 0;
+    }
+
+    .iiui-logo-circle {
+        width: 46px;
+        height: 46px;
+        border-width: 2px;
+    }
+
+    .iiui-logo-circle .logo-main {
+        font-size: 12px;
+    }
+
+    .iiui-logo-circle .logo-sub {
+        font-size: 5px;
+    }
+
+    .iiui-name .uni-name {
+        font-size: 0.8rem;
+    }
+
+    .iiui-name .uni-name-arabic {
+        font-size: 0.55rem;
+    }
+
+    .iiui-campus .campus-name {
+        font-size: 0.7rem;
+        letter-spacing: 1px;
+    }
+
+    .iiui-campus .campus-sub {
+        font-size: 0.5rem;
+        letter-spacing: 2px;
+    }
+}
+
+/* ============================================
+   TYPOGRAPHY
+   ============================================ */
+h1 {
+    font-size: 2.0rem;
+    font-weight: 700;
+    color: var(--iiui-green-dark);
+    margin-bottom: 10px;
+    letter-spacing: -0.3px;
+    position: relative;
+    display: inline-block;
+}
+
+h1::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background: var(--iiui-green);
+    border-radius: 4px;
+}
+
+h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--iiui-green-dark);
+}
+
+.intro {
+    font-size: 0.98rem;
+    line-height: 1.7;
+    color: var(--text-muted);
+    margin: 6px 0 26px 0;
+    padding: 16px 20px;
+    background: var(--iiui-green-pale);
+    border-radius: var(--radius-sm);
+    border-left: 4px solid var(--iiui-green);
+}
+
+/* ============================================
+   FORM ELEMENTS
+   ============================================ */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--iiui-green-dark);
+    margin-bottom: 2px;
+    letter-spacing: 0.3px;
+}
+
+/* ---------- Input Fields ---------- */
+input[type="text"],
+input[type="email"],
+select,
+textarea {
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    border: 2px solid #dce8e0;
+    border-radius: var(--radius-sm);
+    background: var(--off-white);
+    color: var(--text-dark);
+    transition: var(--transition);
+    outline: none;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--iiui-green);
+    background: var(--white);
+    box-shadow: 0 0 0 4px rgba(0, 104, 55, 0.10), inset 0 2px 4px rgba(0,0,0,0.02);
+    transform: translateY(-1px);
+}
+
+input[readonly] {
+    background: #eef3f0;
+    color: var(--text-muted);
+    cursor: not-allowed;
+    border-color: #c8d6ce;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 110px;
+    line-height: 1.6;
+}
+
+select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23006837' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    cursor: pointer;
+}
+
+/* ---------- Name Row (2 columns) ---------- */
+.name-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.name-row .input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+/* ============================================
+   BUTTONS
+   ============================================ */
+button,
+a button {
+    padding: 14px 32px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    font-family: inherit;
+    color: var(--white);
+    background: var(--iiui-green);
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: 0 6px 20px rgba(0, 104, 55, 0.30);
+    position: relative;
+    transform: translateY(0);
+    letter-spacing: 0.5px;
+    margin-top: 6px;
+}
+
+button:hover,
+a button:hover {
+    transform: translateY(-3px) scale(1.01);
+    box-shadow: 0 12px 30px rgba(0, 104, 55, 0.40);
+    background: var(--iiui-green-dark);
+}
+
+button:active {
+    transform: translateY(0) scale(0.98);
+    box-shadow: 0 4px 12px rgba(0, 104, 55, 0.25);
+}
+
+/* 3D button effect */
+button::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-sm);
+    background: linear-gradient(135deg, rgba(255,255,255,0.10), transparent);
+    pointer-events: none;
+}
+
+a {
+    text-decoration: none;
+    display: inline-block;
+    width: 100%;
+}
+
+a button {
+    width: 100%;
+}
+
+/* ============================================
+   ERROR MESSAGE
+   ============================================ */
+.error {
+    color: #c0392b;
+    background: rgba(192, 57, 43, 0.06);
+    padding: 12px 18px;
+    border-radius: var(--radius-sm);
+    border-left: 4px solid #c0392b;
+    font-weight: 500;
+    margin: 8px 0 4px 0;
+}
+
+/* ============================================
+   PRIVACY CARD
+   ============================================ */
+.privacy-card {
+    background: var(--iiui-green-pale);
+    border-radius: var(--radius-sm);
+    padding: 18px 22px;
+    margin: 6px 0 4px 0;
+    border: 1px solid rgba(0, 104, 55, 0.10);
+    box-shadow: inset 0 2px 8px rgba(0,0,0,0.02), 0 4px 12px rgba(0, 104, 55, 0.06);
+    transition: var(--transition);
+    transform: perspective(600px) rotateX(0deg);
+}
+
+.privacy-card:hover {
+    transform: perspective(600px) rotateX(1deg);
+    box-shadow: 0 8px 24px rgba(0, 104, 55, 0.10);
+    border-color: rgba(0, 104, 55, 0.20);
+}
+
+.privacy-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    cursor: pointer;
+}
+
+.privacy-option input[type="checkbox"] {
+    display: none;
+}
+
+.custom-check {
+    width: 22px;
+    height: 22px;
+    min-width: 22px;
+    border: 2px solid #a0b8aa;
+    border-radius: 6px;
+    background: var(--white);
+    transition: var(--transition);
+    margin-top: 2px;
+    position: relative;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.04);
+}
+
+.privacy-option input:checked + .custom-check {
+    background: var(--iiui-green);
+    border-color: var(--iiui-green);
+    box-shadow: 0 4px 12px rgba(0, 104, 55, 0.25);
+}
+
+.privacy-option input:checked + .custom-check::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--white);
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.privacy-content h3 {
+    font-size: 0.98rem;
+    margin-bottom: 4px;
+    color: var(--iiui-green-dark);
+}
+
+.privacy-content p {
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+@media (max-width: 680px) {
+    .container {
+        padding: 30px 22px;
+    }
+
+    h1 {
+        font-size: 1.6rem;
+    }
+
+    .name-row {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .intro {
+        padding: 14px 16px;
+        font-size: 0.92rem;
+    }
+
+    button,
+    a button {
+        padding: 12px 24px;
+        font-size: 0.98rem;
+    }
+
+    .privacy-card {
+        padding: 14px 16px;
+    }
+
+    .privacy-option {
+        gap: 12px;
+    }
+
+    .privacy-content h3 {
+        font-size: 0.9rem;
+    }
+
+    .privacy-content p {
+        font-size: 0.83rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 20px 14px;
+        border-radius: 12px;
+    }
+
+    h1 {
+        font-size: 1.3rem;
+    }
+
+    h1::after {
+        width: 40px;
+        height: 3px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    select,
+    textarea {
+        padding: 10px 14px;
+        font-size: 0.88rem;
+    }
+}
+
+/* ============================================
+   ACCESSIBILITY / PRINT
+   ============================================ */
+@media print {
+    .container {
+        box-shadow: none;
+        transform: none !important;
+        border: 1px solid #ddd;
+    }
+    .container::before {
+        display: none;
+    }
+    .iiui-banner {
+        background: #006837 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    .iiui-banner::before,
+    .iiui-banner::after {
+        display: none;
+    }
+    button {
+        background: #006837 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+html {
+    scroll-behavior: smooth;
+}
+
+*:focus-visible {
+    outline: 3px solid var(--iiui-green);
+    outline-offset: 2px;
+}
+
+@keyframes floatIn {
+    0% {
+        opacity: 0;
+        transform: perspective(1000px) rotateX(5deg) translateY(30px);
+    }
+    100% {
+        opacity: 1;
+        transform: perspective(1000px) rotateX(0deg) translateY(0);
+    }
+}
+
+.container {
+    animation: floatIn 0.6s ease-out forwards;
+}
+
+/* ============================================
+   IIUI OFFICIAL STYLE TOUCHES
+   ============================================ */
+select option {
+    padding: 8px;
+}
+
+/* Gold accent for IIUI */
+.gold-accent {
+    color: var(--gold);
+}
+
+/* Page-specific refinements */
+.container .intro + a {
+    margin-top: 10px;
+}

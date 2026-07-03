@@ -4,8 +4,10 @@ import random
 from email.message import EmailMessage
 
 
-SENDER_EMAIL = "hajabatool01@gmail.com"
-APP_PASSWORD = "ngmn bpob qpyq klxh"
+import os
+
+SENDER_EMAIL = os.environ.get("SENDER_EMAIL")
+APP_PASSWORD = os.environ.get("APP_PASSWORD")
 
 
 # ---------------------------------------

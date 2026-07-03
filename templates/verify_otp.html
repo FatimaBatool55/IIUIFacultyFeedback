@@ -1,59 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Verify OTP</title>
-
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-
 </head>
-
 <body>
+    <!-- IIUI BANNER -->
+    <div class="iiui-banner">
+        <div class="iiui-brand">
+            <div class="iiui-logo">
+                <div class="iiui-logo-circle">
+                    <span class="logo-main">IIUI</span>
+                    <span class="logo-sub">Islamic University</span>
+                    <span class="logo-star">✦ ✦ ✦</span>
+                </div>
+            </div>
+            <div class="iiui-name">
+                <div class="uni-name">International Islamic University</div>
+                <div class="uni-name-arabic">الجامعة الإسلامية العالمية، إسلام آباد</div>
+            </div>
+        </div>
+        <div class="iiui-campus">
+            <div class="campus-name">ISLAMABAD</div>
+            <div class="campus-sub"><span class="gold-text">✦</span> PAKISTAN <span class="gold-text">✦</span></div>
+        </div>
+    </div>
 
-<div class="container">
+    <div class="container">
+        <h1>Email Verification</h1>
+        <p class="intro">
+            A verification code has been sent to your IIUI email address.
+            Please enter the 6-digit OTP below to continue.
+        </p>
 
-    <h1>Email Verification</h1>
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
 
-    <p class="intro">
-
-        A verification code has been sent to your IIUI email address.
-
-        Please enter the 6-digit OTP below to continue.
-
-    </p>
-
-    {% if error %}
-
-        <p class="error">{{ error }}</p>
-
-    {% endif %}
-
-    <form action="/verify" method="POST">
-
-        <label>Enter OTP</label>
-
-        <input
-                type="text"
-                name="otp"
-                maxlength="6"
-                placeholder="Enter 6-digit OTP"
-                required>
-
-        <button type="submit">
-
-            Verify OTP
-
-        </button>
-
-    </form>
-
-</div>
-
+        <form action="/verify" method="POST">
+            <label>Enter OTP</label>
+            <input type="text" name="otp" maxlength="6" placeholder="Enter 6-digit OTP" required>
+            <button type="submit">Verify OTP</button>
+        </form>
+    </div>
 </body>
-
 </html>

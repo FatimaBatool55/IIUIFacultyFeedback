@@ -107,6 +107,26 @@ def submit():
         )
 
     save_feedback(
+    student_name,
+    student_email,
+    faculty_rating,
+    course_rating,
+    facilities_rating,
+    administration_rating,
+    overall_rating,
+    comments
+)
+
+try:
+    print("Sending thank you email...")
+    send_thank_you(student_email, student_name)
+    print("Thank you email sent.")
+except Exception as e:
+    print("THANK YOU EMAIL ERROR:", str(e))
+
+try:
+    print("Sending admin email...")
+    send_admin_notification(
         student_name,
         student_email,
         faculty_rating,
@@ -116,22 +136,9 @@ def submit():
         overall_rating,
         comments
     )
-
-    # send_thank_you(
-#     student_email,
-#     student_name
-# )
-
-# send_admin_notification(
-#     student_name,
-#     student_email,
-#     faculty_rating,
-#     course_rating,
-#     facilities_rating,
-#     administration_rating,
-#     overall_rating,
-#     comments
-# )
+    print("Admin email sent.")
+except Exception as e:
+    print("ADMIN EMAIL ERROR:", str(e))
 
     session.clear()
 

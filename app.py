@@ -15,17 +15,17 @@ app.secret_key = "iiui_feedback_secret_key"
 create_database()
 
 
-# -----------------------------------
+# -----------------------------
 # Login Page
-# -----------------------------------
+# -----------------------------
 @app.route("/")
 def login():
     return render_template("login.html")
 
 
-# -----------------------------------
+# -----------------------------
 # Send OTP
-# -----------------------------------
+# -----------------------------
 @app.route("/send-otp", methods=["POST"])
 def send_otp_route():
 
@@ -52,9 +52,9 @@ def send_otp_route():
     return render_template("verify_otp.html")
 
 
-# -----------------------------------
+# -----------------------------
 # Verify OTP
-# -----------------------------------
+# -----------------------------
 @app.route("/verify", methods=["POST"])
 def verify():
 
@@ -69,21 +69,20 @@ def verify():
     return redirect("/feedback")
 
 
-# -----------------------------------
-# Feedback Page
-# -----------------------------------
+# -----------------------------
+# Feedback Form
+# -----------------------------
 @app.route("/feedback")
 def feedback():
 
     if "student_email" not in session:
         return redirect("/")
 
-    student_email = session["student_email"]
+    student_email = session.get("student_email")
 
     # Extract first name from email
+    # fatima.bscs4932@student.iiu.edu.pk -> Fatima
     username = student_email.split("@")[0]
-
-    # fatima.bscs4932 -> Fatima
     first_name = username.split(".")[0].capitalize()
 
     return render_template(
@@ -92,30 +91,28 @@ def feedback():
     )
 
 
-# -----------------------------------
+# -----------------------------
 # Submit Feedback
-# -----------------------------------
+# -----------------------------
 @app.route("/submit", methods=["POST"])
 def submit():
 
-    student_email = session.get("student_email")
-
-    if not student_email:
-        return redirect("/")
-
-    username = student_email.split("@")[0]
-    first_name = username.split(".")[0].capitalize()
-
+    first_name = request.form["first_name"].strip()
     last_name = request.form["last_name"].strip()
 
-    if not re.fullmatch(r"[A-Za-z ]{2,30}", last_name):
+    # Validate last name
+    if not re.fullmatch(r"[A-Za-z]{2,30}", last_name):
         return render_template(
             "index.html",
             first_name=first_name,
-            error="Please enter a valid last name."
+            error="Enter a valid last name using letters only."
         )
 
-    student_name = f"{first_name} {last_name}"
+    student_name = first_name + " " + last_name
+
+    student_email = session.get("student_email")
+
+    hide_identity = request.form.get("hide_identity") == "yes"
 
     faculty_rating = request.form["faculty_rating"]
     course_rating = request.form["course_rating"]
@@ -125,12 +122,7 @@ def submit():
 
     comments = request.form["comments"]
 
-    hide_identity = request.form.get("hide_identity")
-
-    # -----------------------
-    # Save REAL data
-    # -----------------------
-
+    # Save actual data to database
     save_feedback(
         student_name,
         student_email,
@@ -142,80 +134,44 @@ def submit():
         comments
     )
 
-    # -----------------------
-    # Thank You Email
-    # -----------------------
-
+    # Send thank you email
     try:
-        send_thank_you(
-            student_email,
-            student_name
-        )
+        print("Sending thank you email...")
+        send_thank_you(student_email, student_name)
+        print("Thank you email sent.")
     except Exception as e:
-        print("THANK YOU EMAIL ERROR:", e)
+        print("THANK YOU EMAIL ERROR:", str(e))
 
-    # -----------------------
-    # Hide identity for admin
-    # -----------------------
-
-    if hide_identity:
-
-        admin_name = "********"
-
-        admin_email = "********"
-
-    else:
-
-        admin_name = student_name
-
-        admin_email = student_email
-
-    # -----------------------
-    # Admin Email
-    # -----------------------
-
+    # Send admin email
     try:
-
+        print("Sending admin email...")
         send_admin_notification(
-
-            admin_name,
-
-            admin_email,
-
+            student_name,
+            student_email,
             faculty_rating,
-
             course_rating,
-
             facilities_rating,
-
             administration_rating,
-
             overall_rating,
-
-            comments
-
+            comments,
+            hide_identity
         )
-
+        print("Admin email sent.")
     except Exception as e:
-
-        print("ADMIN EMAIL ERROR:", e)
+        print("ADMIN EMAIL ERROR:", str(e))
 
     session.clear()
 
     return redirect("/success")
 
 
-# -----------------------------------
+# -----------------------------
 # Success Page
-# -----------------------------------
+# -----------------------------
 @app.route("/success")
 def success():
-
     return render_template("success.html")
 
 
-# -----------------------------------
-# Run App
-# -----------------------------------
 if __name__ == "__main__":
     app.run(debug=True)

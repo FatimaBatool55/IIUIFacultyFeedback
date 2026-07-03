@@ -22,18 +22,18 @@
     <p class="intro">
 
         Welcome to the IIUI Faculty Feedback Survey.
-
         This survey is conducted to collect valuable feedback from students regarding faculty performance, course content, university facilities, and overall academic experience.
-
         Your honest feedback helps IIUI improve teaching quality and student services.
 
     </p>
 
     {% if error %}
-    <p class="error">{{ error }}</p>
+        <p class="error">{{ error }}</p>
     {% endif %}
 
     <form action="/submit" method="POST">
+
+        <!-- First Name -->
 
         <label>First Name</label>
 
@@ -44,6 +44,8 @@
             readonly
         >
 
+        <!-- Last Name -->
+
         <label>Last Name</label>
 
         <input
@@ -53,19 +55,7 @@
             required
         >
 
-        <label style="margin-top:15px; display:flex; align-items:center; gap:8px;">
-
-            <input
-                type="checkbox"
-                name="hide_identity"
-                value="yes"
-            >
-
-            Hide my identity from administrator emails
-
-        </label>
-
-        <br>
+        <!-- Faculty Rating -->
 
         <label>Faculty Rating</label>
 
@@ -79,6 +69,8 @@
 
         </select>
 
+        <!-- Course Rating -->
+
         <label>Course Content Rating</label>
 
         <select name="course_rating">
@@ -90,6 +82,8 @@
             <option value="5">5 - Poor</option>
 
         </select>
+
+        <!-- Facilities Rating -->
 
         <label>Facilities Rating</label>
 
@@ -103,6 +97,8 @@
 
         </select>
 
+        <!-- Administration Rating -->
+
         <label>Administration Rating</label>
 
         <select name="administration_rating">
@@ -114,6 +110,8 @@
             <option value="5">5 - Poor</option>
 
         </select>
+
+        <!-- Overall Rating -->
 
         <label>Overall Satisfaction Rating</label>
 
@@ -127,6 +125,8 @@
 
         </select>
 
+        <!-- Comments -->
+
         <label>Comments / Suggestions</label>
 
         <textarea
@@ -134,6 +134,41 @@
             rows="5"
             placeholder="Write your comments here..."
         ></textarea>
+
+        <!-- Privacy Notice -->
+
+        <div class="privacy-card">
+
+            <div class="privacy-header">
+
+                <input
+                    type="checkbox"
+                    id="hide_identity"
+                    name="hide_identity"
+                    value="yes"
+                >
+
+                <label for="hide_identity">
+
+                    <strong>Hide my identity from administrator emails</strong>
+
+                </label>
+
+            </div>
+
+            <p>
+
+                Your feedback will still be stored securely in the university database.
+
+                Only your identity (name and email) will be hidden from administrator notification emails.
+
+                Your responses will continue to be used for improving teaching quality and university services.
+
+            </p>
+
+        </div>
+
+        <!-- Submit -->
 
         <button type="submit">
 

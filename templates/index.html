@@ -1,131 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IIUI Faculty Feedback Survey</title>
+
+    <title>IIUI Email Verification</title>
+
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
 </head>
+
 <body>
-    <!-- IIUI BANNER -->
-    <div class="iiui-banner">
-        <div class="iiui-brand">
-            <div class="iiui-logo">
-                <div class="iiui-logo-circle">
-                    <span class="logo-main">IIUI</span>
-                    <span class="logo-sub">Islamic University</span>
-                    <span class="logo-star">✦ ✦ ✦</span>
-                </div>
-            </div>
-            <div class="iiui-name">
-                <div class="uni-name">International Islamic University</div>
-                <div class="uni-name-arabic">الجامعة الإسلامية العالمية، إسلام آباد</div>
-            </div>
-        </div>
-        <div class="iiui-campus">
-            <div class="campus-name">ISLAMABAD</div>
-            <div class="campus-sub"><span class="gold-text">✦</span> PAKISTAN <span class="gold-text">✦</span></div>
-        </div>
-    </div>
 
-    <div class="container">
-        <h1>IIUI Faculty Feedback Survey</h1>
-        <p class="intro">
-            Welcome to the IIUI Faculty Feedback Survey.
-            This survey is conducted to collect valuable feedback regarding faculty
-            performance, course content, university facilities and overall academic
-            experience. Your honest feedback helps IIUI improve teaching quality and
-            student services.
-        </p>
+<div class="container">
 
-        {% if error %}
-            <p class="error">{{ error }}</p>
-        {% endif %}
+    <h1>IIUI Faculty Feedback System</h1>
 
-        <form action="/submit" method="POST">
-            <!-- Student Information -->
-            <div class="name-row">
-                <div class="input-group">
-                    <label>First Name</label>
-                    <input type="text" name="first_name" value="{{ first_name }}" readonly>
-                </div>
-                <div class="input-group">
-                    <label>Last Name</label>
-                    <input type="text" name="last_name" placeholder="Enter your last name" required>
-                </div>
-            </div>
+    <p class="intro">
 
-            <!-- Ratings -->
-            <label>Faculty Rating</label>
-            <select name="faculty_rating">
-                <option value="1">1 - Excellent</option>
-                <option value="2">2 - Very Good</option>
-                <option value="3">3 - Good</option>
-                <option value="4">4 - Fair</option>
-                <option value="5">5 - Poor</option>
-            </select>
+        Welcome to the IIUI Faculty Feedback System.  
+        To ensure only verified students can submit feedback, please enter your official IIUI email.  
+        A One-Time Password (OTP) will be sent to your email for verification.
 
-            <label>Course Content Rating</label>
-            <select name="course_rating">
-                <option value="1">1 - Excellent</option>
-                <option value="2">2 - Very Good</option>
-                <option value="3">3 - Good</option>
-                <option value="4">4 - Fair</option>
-                <option value="5">5 - Poor</option>
-            </select>
+    </p>
 
-            <label>Facilities Rating</label>
-            <select name="facilities_rating">
-                <option value="1">1 - Excellent</option>
-                <option value="2">2 - Very Good</option>
-                <option value="3">3 - Good</option>
-                <option value="4">4 - Fair</option>
-                <option value="5">5 - Poor</option>
-            </select>
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
 
-            <label>Administration Rating</label>
-            <select name="administration_rating">
-                <option value="1">1 - Excellent</option>
-                <option value="2">2 - Very Good</option>
-                <option value="3">3 - Good</option>
-                <option value="4">4 - Fair</option>
-                <option value="5">5 - Poor</option>
-            </select>
+    <form action="/send-otp" method="POST">
 
-            <label>Overall Satisfaction Rating</label>
-            <select name="overall_rating">
-                <option value="1">1 - Excellent</option>
-                <option value="2">2 - Very Good</option>
-                <option value="3">3 - Good</option>
-                <option value="4">4 - Fair</option>
-                <option value="5">5 - Poor</option>
-            </select>
+        <label>IIUI Email Address</label>
 
-            <!-- Comments -->
-            <label>Comments / Suggestions</label>
-            <textarea name="comments" rows="6" placeholder="Write your comments here..."></textarea>
+        <input 
+            type="email"
+            name="student_email"
+            placeholder="example@student.iiu.edu.pk"
+            required
+        >
 
-            <!-- Privacy Card -->
-            <div class="privacy-card">
-                <label class="privacy-option">
-                    <input type="checkbox" name="hide_identity" value="yes">
-                    <span class="custom-check"></span>
-                    <div class="privacy-content">
-                        <h3>🔒 Hide my identity from administrator emails</h3>
-                        <p>
-                            Your feedback will remain securely stored in the IIUI
-                            database. If you enable this option, your <strong>name</strong>
-                            and <strong>email address</strong> will be hidden. Only your ratings and
-                            comments will be shared for review while preserving your
-                            privacy.
-                        </p>
-                    </div>
-                </label>
-            </div>
+        <button type="submit">
+            Send OTP
+        </button>
 
-            <!-- Submit -->
-            <button type="submit">Submit Feedback</button>
-        </form>
-    </div>
+    </form>
+
+</div>
+
 </body>
+
 </html>

@@ -1,10 +1,9 @@
+import os
 import smtplib
 import random
 
 from email.message import EmailMessage
 
-
-import os
 
 SENDER_EMAIL = os.environ.get("SENDER_EMAIL")
 APP_PASSWORD = os.environ.get("APP_PASSWORD")
@@ -16,15 +15,13 @@ APP_PASSWORD = os.environ.get("APP_PASSWORD")
 
 def send_thank_you(student_email, student_name):
 
-    try:
+    message = EmailMessage()
 
-        message = EmailMessage()
+    message["Subject"] = "Thank You - IIUI Faculty Feedback"
+    message["From"] = SENDER_EMAIL
+    message["To"] = student_email
 
-        message["Subject"] = "Thank You - IIUI Faculty Feedback"
-        message["From"] = SENDER_EMAIL
-        message["To"] = student_email
-
-        message.set_content(f"""
+    message.set_content(f"""
 Dear {student_name},
 
 Thank you for completing the IIUI Faculty Feedback Survey.
@@ -40,12 +37,9 @@ International Islamic University Islamabad (IIUI)
 Faculty Feedback Committee
 """)
 
-        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
-            smtp.login(SENDER_EMAIL, APP_PASSWORD)
-            smtp.send_message(message)
-
-    except Exception as e:
-        print("Thank You Email Error:", e)
+    with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
+        smtp.login(SENDER_EMAIL, APP_PASSWORD)
+        smtp.send_message(message)
 
 
 # ---------------------------------------
@@ -53,25 +47,23 @@ Faculty Feedback Committee
 # ---------------------------------------
 
 def send_admin_notification(
-        student_name,
-        student_email,
-        faculty_rating,
-        course_rating,
-        facilities_rating,
-        administration_rating,
-        overall_rating,
-        comments
+    student_name,
+    student_email,
+    faculty_rating,
+    course_rating,
+    facilities_rating,
+    administration_rating,
+    overall_rating,
+    comments
 ):
 
-    try:
+    message = EmailMessage()
 
-        message = EmailMessage()
+    message["Subject"] = "New Faculty Feedback Received"
+    message["From"] = SENDER_EMAIL
+    message["To"] = SENDER_EMAIL
 
-        message["Subject"] = "New Faculty Feedback Received"
-        message["From"] = SENDER_EMAIL
-        message["To"] = SENDER_EMAIL
-
-        message.set_content(f"""
+    message.set_content(f"""
 A new faculty feedback form has been submitted.
 
 -----------------------------------------
@@ -103,12 +95,9 @@ Comments
 This email was generated automatically by the IIUI Faculty Feedback System.
 """)
 
-        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
-            smtp.login(SENDER_EMAIL, APP_PASSWORD)
-            smtp.send_message(message)
-
-    except Exception as e:
-        print("Admin Email Error:", e)
+    with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
+        smtp.login(SENDER_EMAIL, APP_PASSWORD)
+        smtp.send_message(message)
 
 
 # ---------------------------------------
@@ -131,15 +120,13 @@ def generate_otp():
 
 def send_otp(student_email, otp):
 
-    try:
+    message = EmailMessage()
 
-        message = EmailMessage()
+    message["Subject"] = "IIUI Email Verification OTP"
+    message["From"] = SENDER_EMAIL
+    message["To"] = student_email
 
-        message["Subject"] = "IIUI Email Verification OTP"
-        message["From"] = SENDER_EMAIL
-        message["To"] = student_email
-
-        message.set_content(f"""
+    message.set_content(f"""
 Dear Student,
 
 Your One-Time Password (OTP) for IIUI Faculty Feedback Verification is:
@@ -155,9 +142,6 @@ Regards,
 IIUI Faculty Feedback System
 """)
 
-        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
-            smtp.login(SENDER_EMAIL, APP_PASSWORD)
-            smtp.send_message(message)
-
-    except Exception as e:
-        print("OTP Email Error:", e)
+    with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
+        smtp.login(SENDER_EMAIL, APP_PASSWORD)
+        smtp.send_message(message)

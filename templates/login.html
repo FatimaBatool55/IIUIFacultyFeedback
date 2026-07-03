@@ -1,60 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>IIUI Email Verification</title>
-
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-
 </head>
-
 <body>
+    <!-- IIUI BANNER -->
+    <div class="iiui-banner">
+        <div class="iiui-brand">
+            <div class="iiui-logo">
+                <div class="iiui-logo-circle">
+                    <span class="logo-main">IIUI</span>
+                    <span class="logo-sub">Islamic University</span>
+                    <span class="logo-star">✦ ✦ ✦</span>
+                </div>
+            </div>
+            <div class="iiui-name">
+                <div class="uni-name">International Islamic University</div>
+                <div class="uni-name-arabic">الجامعة الإسلامية العالمية، إسلام آباد</div>
+            </div>
+        </div>
+        <div class="iiui-campus">
+            <div class="campus-name">ISLAMABAD</div>
+            <div class="campus-sub"><span class="gold-text">✦</span> PAKISTAN <span class="gold-text">✦</span></div>
+        </div>
+    </div>
 
-<div class="container">
+    <div class="container">
+        <h1>IIUI Faculty Feedback System</h1>
+        <p class="intro">
+            Welcome to the IIUI Faculty Feedback System.
+            To ensure that only enrolled students can submit feedback, you must first verify your official IIUI email address.
+            A One-Time Password (OTP) will be sent to your email. After successful verification, you will be allowed to access the feedback form.
+        </p>
 
-    <h1>IIUI Faculty Feedback System</h1>
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
 
-    <p class="intro">
-
-        Welcome to the IIUI Faculty Feedback System.
-
-        To ensure that only enrolled students can submit feedback, you must first verify your official IIUI email address.
-
-        A One-Time Password (OTP) will be sent to your email. After successful verification, you will be allowed to access the feedback form.
-
-    </p>
-
-    {% if error %}
-
-        <p class="error">{{ error }}</p>
-
-    {% endif %}
-
-    <form action="/send-otp" method="POST">
-
-        <label>IIUI Email Address</label>
-
-        <input
-                type="email"
-                name="student_email"
-                placeholder="example@iiu.edu.pk"
-                required>
-
-        <button type="submit">
-
-            Send Verification OTP
-
-        </button>
-
-    </form>
-
-</div>
-
+        <form action="/send-otp" method="POST">
+            <label>IIUI Email Address</label>
+            <input type="email" name="student_email" placeholder="example@iiu.edu.pk" required>
+            <button type="submit">Send Verification OTP</button>
+        </form>
+    </div>
 </body>
-
 </html>

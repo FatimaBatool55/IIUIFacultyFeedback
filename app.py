@@ -3,7 +3,7 @@ import re
 
 from database import create_database, save_feedback
 from email_service import (
-    send_thank_you,
+   send_thank_you,
     send_admin_notification,
     generate_otp,
     send_otp
@@ -12,7 +12,7 @@ from email_service import (
 app = Flask(__name__)
 app.secret_key = "iiui_feedback_secret_key"
 
-
+create_database()
 
 
 # -----------------------------
@@ -88,7 +88,6 @@ def feedback():
 def submit():
 
     student_name = request.form["student_name"].strip()
-
     student_email = session.get("student_email")
 
     faculty_rating = request.form["faculty_rating"]
@@ -99,7 +98,6 @@ def submit():
 
     comments = request.form["comments"]
 
-    # Validate student name
     if not re.fullmatch(r"[A-Za-z ]{3,50}", student_name):
         return render_template(
             "index.html",
@@ -107,26 +105,6 @@ def submit():
         )
 
     save_feedback(
-    student_name,
-    student_email,
-    faculty_rating,
-    course_rating,
-    facilities_rating,
-    administration_rating,
-    overall_rating,
-    comments
-)
-
-try:
-    print("Sending thank you email...")
-    send_thank_you(student_email, student_name)
-    print("Thank you email sent.")
-except Exception as e:
-    print("THANK YOU EMAIL ERROR:", str(e))
-
-try:
-    print("Sending admin email...")
-    send_admin_notification(
         student_name,
         student_email,
         faculty_rating,
@@ -136,9 +114,31 @@ try:
         overall_rating,
         comments
     )
-    print("Admin email sent.")
-except Exception as e:
-    print("ADMIN EMAIL ERROR:", str(e))
+
+    # Send Thank You Email
+    try:
+        print("Sending thank you email...")
+        send_thank_you(student_email, student_name)
+        print("Thank you email sent.")
+    except Exception as e:
+        print("THANK YOU EMAIL ERROR:", e)
+
+    # Send Admin Email
+    try:
+        print("Sending admin email...")
+        send_admin_notification(
+            student_name,
+            student_email,
+            faculty_rating,
+            course_rating,
+            facilities_rating,
+            administration_rating,
+            overall_rating,
+            comments
+        )
+        print("Admin email sent.")
+    except Exception as e:
+        print("ADMIN EMAIL ERROR:", e)
 
     session.clear()
 

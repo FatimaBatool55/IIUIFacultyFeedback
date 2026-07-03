@@ -22,8 +22,10 @@
     <p class="intro">
 
         Welcome to the IIUI Faculty Feedback Survey.
-        This survey is conducted to collect valuable feedback from students regarding faculty performance, course content, university facilities, and overall academic experience.
-        Your honest feedback helps IIUI improve teaching quality and student services.
+        This survey is conducted to collect valuable feedback regarding faculty
+        performance, course content, university facilities and overall academic
+        experience. Your honest feedback helps IIUI improve teaching quality and
+        student services.
 
     </p>
 
@@ -33,29 +35,44 @@
 
     <form action="/submit" method="POST">
 
-        <!-- First Name -->
+        <!-- =========================
+             Student Information
+        ========================== -->
 
-        <label>First Name</label>
+        <div class="name-row">
 
-        <input
-            type="text"
-            name="first_name"
-            value="{{ first_name }}"
-            readonly
-        >
+            <div class="input-group">
 
-        <!-- Last Name -->
+                <label>First Name</label>
 
-        <label>Last Name</label>
+                <input
+                    type="text"
+                    name="first_name"
+                    value="{{ first_name }}"
+                    readonly
+                >
 
-        <input
-            type="text"
-            name="last_name"
-            placeholder="Enter your last name"
-            required
-        >
+            </div>
 
-        <!-- Faculty Rating -->
+            <div class="input-group">
+
+                <label>Last Name</label>
+
+                <input
+                    type="text"
+                    name="last_name"
+                    placeholder="Enter your last name"
+                    required
+                >
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             Ratings
+        ========================== -->
 
         <label>Faculty Rating</label>
 
@@ -69,7 +86,6 @@
 
         </select>
 
-        <!-- Course Rating -->
 
         <label>Course Content Rating</label>
 
@@ -83,7 +99,6 @@
 
         </select>
 
-        <!-- Facilities Rating -->
 
         <label>Facilities Rating</label>
 
@@ -97,7 +112,6 @@
 
         </select>
 
-        <!-- Administration Rating -->
 
         <label>Administration Rating</label>
 
@@ -111,7 +125,6 @@
 
         </select>
 
-        <!-- Overall Rating -->
 
         <label>Overall Satisfaction Rating</label>
 
@@ -125,50 +138,75 @@
 
         </select>
 
-        <!-- Comments -->
+
+        <!-- =========================
+             Comments
+        ========================== -->
 
         <label>Comments / Suggestions</label>
 
         <textarea
+
             name="comments"
-            rows="5"
+
+            rows="6"
+
             placeholder="Write your comments here..."
+
         ></textarea>
 
-        <!-- Privacy Notice -->
+
+
+        <!-- =========================
+             Beautiful Privacy Card
+        ========================== -->
 
         <div class="privacy-card">
 
-            <div class="privacy-header">
+            <label class="privacy-option">
 
                 <input
+
                     type="checkbox"
-                    id="hide_identity"
+
                     name="hide_identity"
+
                     value="yes"
+
                 >
 
-                <label for="hide_identity">
+                <span class="custom-check"></span>
 
-                    <strong>Hide my identity from administrator emails</strong>
+                <div class="privacy-content">
 
-                </label>
+                    <h3>
 
-            </div>
+                        🔒 Hide my identity from administrator emails
 
-            <p>
+                    </h3>
 
-                Your feedback will still be stored securely in the university database.
+                    <p>
 
-                Only your identity (name and email) will be hidden from administrator notification emails.
+                        Your feedback will remain securely stored in the IIUI
+                        database. If you enable this option, your <strong>name</strong>
+                        and <strong>email address</strong> will be hidden in the
+                        administrator notification email. Only your ratings and
+                        comments will be shared for review while preserving your
+                        privacy.
 
-                Your responses will continue to be used for improving teaching quality and university services.
+                    </p>
 
-            </p>
+                </div>
+
+            </label>
 
         </div>
 
-        <!-- Submit -->
+
+
+        <!-- =========================
+             Submit
+        ========================== -->
 
         <button type="submit">
 

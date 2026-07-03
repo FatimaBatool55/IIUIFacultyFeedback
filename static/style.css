@@ -1,320 +1,213 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Feedback Submitted</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-    <!-- IIUI BANNER -->
-    <div class="iiui-banner">
-        <div class="iiui-brand">
-            <div class="iiui-logo">
-                <div class="iiui-logo-circle">
-                    <span class="logo-main">IIUI</span>
-                    <span class="logo-sub">Islamic University</span>
-                    <span class="logo-star">✦ ✦ ✦</span>
-                </div>
-            </div>
-            <div class="iiui-name">
-                <div class="uni-name">International Islamic University</div>
-                <div class="uni-name-arabic">الجامعة الإسلامية العالمية، إسلام آباد</div>
-            </div>
-        </div>
-        <div class="iiui-campus">
-            <div class="campus-name">ISLAMABAD</div>
-            <div class="campus-sub"><span class="gold-text">✦</span> PAKISTAN <span class="gold-text">✦</span></div>
-        </div>
-    </div>
+/* =========================
+   GLOBAL RESET
+========================= */
 
-    <div class="container">
-        <h1>Thank You!</h1>
-        <p class="intro">
-            Your feedback has been submitted successfully.
-            Thank you for taking the time to help improve the quality of education at IIUI.
-        </p>
-        <a href="/">
-            <button>Submit Another Feedback</button>
-        </a>
-    </div>
-</body>
-</html>
-
-/* ==========================================
-            Select Dropdown Styling
-========================================== */
-
-select{
-
-    appearance:none;
-
-    background-image:
-        linear-gradient(45deg,transparent 50%,#0b7d3b 50%),
-        linear-gradient(135deg,#0b7d3b 50%,transparent 50%);
-
-    background-position:
-        calc(100% - 20px) 50%,
-        calc(100% - 15px) 50%;
-
-    background-size:5px 5px,5px 5px;
-
-    background-repeat:no-repeat;
-
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* =========================
+   BODY
+========================= */
 
-/* ==========================================
-            Button (3D Effect)
-========================================== */
-
-button{
-
-    width:100%;
-
-    margin-top:25px;
-
-    padding:16px;
-
-    font-size:18px;
-
-    font-weight:700;
-
-    color:white;
-
-    background:linear-gradient(135deg,#0b7d3b,#16a34a);
-
-    border:none;
-
-    border-radius:16px;
-
-    cursor:pointer;
-
-    transition:all .3s ease;
-
-    box-shadow:
-
-        0 10px 25px rgba(0,0,0,.25),
-
-        inset 0 1px 0 rgba(255,255,255,.3);
-
+body {
+    background: linear-gradient(135deg, #e8f5e9, #f1f8ff);
+    padding: 40px;
 }
 
+/* =========================
+   MAIN CONTAINER
+========================= */
 
-button:hover{
-
-    transform:translateY(-3px);
-
-    box-shadow:
-
-        0 15px 30px rgba(0,0,0,.3);
-
+.container {
+    max-width: 850px;
+    margin: auto;
+    background: #ffffff;
+    padding: 35px;
+    border-radius: 18px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
 }
 
+/* =========================
+   HEADINGS
+========================= */
 
-button:active{
-
-    transform:translateY(0px);
-
-    box-shadow:
-
-        0 8px 15px rgba(0,0,0,.2);
-
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #1b5e20;
 }
 
+.intro {
+    text-align: justify;
+    margin-bottom: 25px;
+    color: #444;
+    line-height: 1.7;
+}
 
-/* ==========================================
-            Name Row (Responsive Fix)
-========================================== */
+/* =========================
+   ERROR MESSAGE
+========================= */
 
-@media(max-width:768px){
+.error {
+    background: #ffebee;
+    color: #c62828;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
 
-    .name-row{
-        flex-direction:column;
+/* =========================
+   LABELS & INPUTS
+========================= */
+
+label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #333;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    outline: none;
+    transition: 0.3s;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: #2e7d32;
+    box-shadow: 0 0 6px rgba(46, 125, 50, 0.3);
+}
+
+/* =========================
+   BUTTON
+========================= */
+
+button {
+    margin-top: 20px;
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(145deg, #2e7d32, #1b5e20);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.25);
+}
+
+/* =========================
+   NAME ROW (FIRST + LAST)
+========================= */
+
+.name-row {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 10px;
+}
+
+.input-group {
+    flex: 1;
+}
+
+/* =========================
+   PRIVACY CARD (3D STYLE)
+========================= */
+
+.privacy-card {
+    margin-top: 25px;
+    padding: 20px;
+    border-radius: 18px;
+    background: linear-gradient(145deg, #ffffff, #f3f7fb);
+    border: 1px solid #dfe7ef;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+    transition: 0.3s ease;
+}
+
+.privacy-card:hover {
+    transform: translateY(-3px);
+}
+
+/* =========================
+   PRIVACY OPTION
+========================= */
+
+.privacy-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    cursor: pointer;
+}
+
+/* hide default checkbox */
+.privacy-option input {
+    display: none;
+}
+
+/* custom checkbox */
+.custom-check {
+    width: 26px;
+    height: 26px;
+    border-radius: 8px;
+    background: #f0f0f0;
+    border: 2px solid #2e7d32;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+    position: relative;
+    transition: 0.3s;
+}
+
+/* checked state */
+.privacy-option input:checked + .custom-check {
+    background: #2e7d32;
+}
+
+.privacy-option input:checked + .custom-check::after {
+    content: "✓";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -55%);
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* privacy text */
+.privacy-content h3 {
+    margin-bottom: 6px;
+    color: #1b5e20;
+}
+
+.privacy-content p {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.6;
+    text-align: justify;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 768px) {
+    .name-row {
+        flex-direction: column;
     }
-
-}
-
-
-/* ==========================================
-            Privacy Card (3D Premium)
-========================================== */
-
-.privacy-card{
-
-    margin-top:30px;
-
-    padding:25px;
-
-    border-radius:20px;
-
-    background:linear-gradient(145deg,#ffffff,#f1f7ff);
-
-    border-left:6px solid #0b7d3b;
-
-    box-shadow:
-
-        0 12px 30px rgba(0,0,0,.15),
-
-        inset 0 1px 0 rgba(255,255,255,.9);
-
-    transition:.3s ease;
-
-}
-
-
-.privacy-card:hover{
-
-    transform:translateY(-3px);
-
-    box-shadow:
-
-        0 18px 40px rgba(0,0,0,.2);
-
-}
-
-
-/* ==========================================
-        Privacy Checkbox Layout
-========================================== */
-
-.privacy-option{
-
-    display:flex;
-
-    gap:18px;
-
-    align-items:flex-start;
-
-    cursor:pointer;
-
-}
-
-
-/* Hide default checkbox */
-
-.privacy-option input{
-
-    display:none;
-
-}
-
-
-/* ==========================================
-        Custom 3D Checkbox
-========================================== */
-
-.custom-check{
-
-    width:28px;
-
-    height:28px;
-
-    min-width:28px;
-
-    border-radius:8px;
-
-    background:linear-gradient(#ffffff,#e6e6e6);
-
-    border:2px solid #0b7d3b;
-
-    box-shadow:
-
-        0 6px 12px rgba(0,0,0,.2),
-
-        inset 0 1px 2px rgba(255,255,255,.8);
-
-    position:relative;
-
-    margin-top:5px;
-
-    transition:.25s;
-
-}
-
-
-/* Hover effect */
-
-.custom-check:hover{
-
-    transform:scale(1.1);
-
-}
-
-
-/* Checked state */
-
-.privacy-option input:checked + .custom-check{
-
-    background:#0b7d3b;
-
-}
-
-
-/* Tick mark */
-
-.privacy-option input:checked + .custom-check::after{
-
-    content:"✓";
-
-    position:absolute;
-
-    top:50%;
-
-    left:50%;
-
-    transform:translate(-50%,-55%);
-
-    color:white;
-
-    font-size:18px;
-
-    font-weight:bold;
-
-}
-
-
-/* ==========================================
-        Privacy Text Styling
-========================================== */
-
-.privacy-content h3{
-
-    color:#0b7d3b;
-
-    font-size:18px;
-
-    margin-bottom:10px;
-
-}
-
-
-.privacy-content p{
-
-    color:#555;
-
-    font-size:14.5px;
-
-    line-height:1.7;
-
-    text-align:justify;
-
-}
-
-
-/* ==========================================
-            Animation
-========================================== */
-
-@keyframes fadeUp{
-
-    from{
-        opacity:0;
-        transform:translateY(20px);
-    }
-
-    to{
-        opacity:1;
-        transform:translateY(0);
-    }
-
 }

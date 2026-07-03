@@ -7,7 +7,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>IIUI Email Verification</title>
+    <title>IIUI Faculty Feedback Survey</title>
 
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
@@ -17,13 +17,13 @@
 
 <div class="container">
 
-    <h1>IIUI Faculty Feedback System</h1>
+    <h1>IIUI Faculty Feedback Survey</h1>
 
     <p class="intro">
 
-        Welcome to the IIUI Faculty Feedback System.  
-        To ensure only verified students can submit feedback, please enter your official IIUI email.  
-        A One-Time Password (OTP) will be sent to your email for verification.
+        Welcome to the IIUI Faculty Feedback Survey.  
+        This survey collects student feedback about faculty performance, course quality, facilities, and overall academic experience.  
+        Your feedback helps improve teaching quality at IIUI.
 
     </p>
 
@@ -31,19 +31,140 @@
         <p class="error">{{ error }}</p>
     {% endif %}
 
-    <form action="/send-otp" method="POST">
+    <form action="/submit" method="POST">
 
-        <label>IIUI Email Address</label>
+        <!-- =========================
+                NAME SECTION
+        ========================== -->
 
-        <input 
-            type="email"
-            name="student_email"
-            placeholder="example@student.iiu.edu.pk"
-            required
-        >
+        <div class="name-row">
+
+            <div class="input-group">
+
+                <label>First Name</label>
+
+                <input
+                    type="text"
+                    name="first_name"
+                    value="{{ first_name }}"
+                    readonly
+                >
+
+            </div>
+
+            <div class="input-group">
+
+                <label>Last Name</label>
+
+                <input
+                    type="text"
+                    name="last_name"
+                    placeholder="Enter your last name"
+                    required
+                >
+
+            </div>
+
+        </div>
+
+        <!-- =========================
+                RATINGS
+        ========================== -->
+
+        <label>Faculty Rating</label>
+        <select name="faculty_rating">
+            <option value="1">1 - Excellent</option>
+            <option value="2">2 - Very Good</option>
+            <option value="3">3 - Good</option>
+            <option value="4">4 - Fair</option>
+            <option value="5">5 - Poor</option>
+        </select>
+
+        <label>Course Content Rating</label>
+        <select name="course_rating">
+            <option value="1">1 - Excellent</option>
+            <option value="2">2 - Very Good</option>
+            <option value="3">3 - Good</option>
+            <option value="4">4 - Fair</option>
+            <option value="5">5 - Poor</option>
+        </select>
+
+        <label>Facilities Rating</label>
+        <select name="facilities_rating">
+            <option value="1">1 - Excellent</option>
+            <option value="2">2 - Very Good</option>
+            <option value="3">3 - Good</option>
+            <option value="4">4 - Fair</option>
+            <option value="5">5 - Poor</option>
+        </select>
+
+        <label>Administration Rating</label>
+        <select name="administration_rating">
+            <option value="1">1 - Excellent</option>
+            <option value="2">2 - Very Good</option>
+            <option value="3">3 - Good</option>
+            <option value="4">4 - Fair</option>
+            <option value="5">5 - Poor</option>
+        </select>
+
+        <label>Overall Satisfaction Rating</label>
+        <select name="overall_rating">
+            <option value="1">1 - Excellent</option>
+            <option value="2">2 - Very Good</option>
+            <option value="3">3 - Good</option>
+            <option value="4">4 - Fair</option>
+            <option value="5">5 - Poor</option>
+        </select>
+
+        <!-- =========================
+                COMMENTS
+        ========================== -->
+
+        <label>Comments / Suggestions</label>
+
+        <textarea
+            name="comments"
+            rows="6"
+            placeholder="Write your comments here..."
+        ></textarea>
+
+        <!-- =========================
+                PRIVACY CARD
+        ========================== -->
+
+        <div class="privacy-card">
+
+            <label class="privacy-option">
+
+                <input
+                    type="checkbox"
+                    name="hide_identity"
+                    value="yes"
+                >
+
+                <span class="custom-check"></span>
+
+                <div class="privacy-content">
+
+                    <h3>🔒 Hide my identity from admin</h3>
+
+                    <p>
+                        If enabled, your name and email will be hidden from the administrator email.  
+                        Only ratings and comments will be shared. Your data will still be securely stored in the database.
+                    </p>
+
+                </div>
+
+            </label>
+
+        </div>
+
+        <!-- =========================
+                SUBMIT BUTTON
+        ========================== -->
 
         <button type="submit">
-            Send OTP
+            Submit Feedback
         </button>
 
     </form>

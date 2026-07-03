@@ -80,16 +80,12 @@ def feedback():
 
     student_email = session.get("student_email")
 
-    # Extract first name from email
-    # fatima.bscs4932@student.iiu.edu.pk -> Fatima
-    username = student_email.split("@")[0]
-    first_name = username.split(".")[0].capitalize()
+    first_name = student_email.split("@")[0].split(".")[0].capitalize()
 
     return render_template(
         "index.html",
         first_name=first_name
     )
-
 
 # -----------------------------
 # Submit Feedback
@@ -100,19 +96,9 @@ def submit():
     first_name = request.form["first_name"].strip()
     last_name = request.form["last_name"].strip()
 
-    # Validate last name
-    if not re.fullmatch(r"[A-Za-z]{2,30}", last_name):
-        return render_template(
-            "index.html",
-            first_name=first_name,
-            error="Enter a valid last name using letters only."
-        )
-
-    student_name = first_name + " " + last_name
+    student_name = f"{first_name} {last_name}"
 
     student_email = session.get("student_email")
-
-    hide_identity = request.form.get("hide_identity") == "yes"
 
     faculty_rating = request.form["faculty_rating"]
     course_rating = request.form["course_rating"]
@@ -122,7 +108,17 @@ def submit():
 
     comments = request.form["comments"]
 
-    # Save actual data to database
+    hide_identity = request.form.get("hide_identity")
+
+    # Validate last name
+    if not re.fullmatch(r"[A-Za-z ]{2,50}", last_name):
+        return render_template(
+            "index.html",
+            first_name=first_name,
+            error="Enter a valid last name using letters only."
+        )
+
+    # Save actual data in database
     save_feedback(
         student_name,
         student_email,
@@ -134,36 +130,41 @@ def submit():
         comments
     )
 
-    # Send thank you email
+    # Send thank you email to student
     try:
-        print("Sending thank you email...")
-        send_thank_you(student_email, student_name)
-        print("Thank you email sent.")
-    except Exception as e:
-        print("THANK YOU EMAIL ERROR:", str(e))
-
-    # Send admin email
-    try:
-        print("Sending admin email...")
-        send_admin_notification(
-            student_name,
+        send_thank_you(
             student_email,
+            student_name
+        )
+    except Exception as e:
+        print("THANK YOU EMAIL ERROR:", e)
+
+    # Decide what admin will see
+    admin_name = student_name
+    admin_email = student_email
+
+    if hide_identity == "yes":
+        admin_name = "*******"
+        admin_email = "*******"
+
+    # Send admin notification
+    try:
+        send_admin_notification(
+            admin_name,
+            admin_email,
             faculty_rating,
             course_rating,
             facilities_rating,
             administration_rating,
             overall_rating,
-            comments,
-            hide_identity
+            comments
         )
-        print("Admin email sent.")
     except Exception as e:
-        print("ADMIN EMAIL ERROR:", str(e))
+        print("ADMIN EMAIL ERROR:", e)
 
     session.clear()
 
     return redirect("/success")
-
 
 # -----------------------------
 # Success Page

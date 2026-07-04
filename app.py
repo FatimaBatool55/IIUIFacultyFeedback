@@ -93,10 +93,9 @@ def feedback():
 @app.route("/submit", methods=["POST"])
 def submit():
 
-    first_name = request.form["first_name"].strip()
-    last_name = request.form["last_name"].strip()
+first_name = request.form["first_name"].strip()
 
-    student_name = f"{first_name} {last_name}"
+student_name = first_name
 
     student_email = session.get("student_email")
 

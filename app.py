@@ -109,13 +109,7 @@ student_name = first_name
 
     hide_identity = request.form.get("hide_identity")
 
-    # Validate last name
-    if not re.fullmatch(r"[A-Za-z ]{2,50}", last_name):
-        return render_template(
-            "index.html",
-            first_name=first_name,
-            error="Enter a valid last name using letters only."
-        )
+    
 
     # Save actual data in database
     save_feedback(

@@ -8,19 +8,15 @@
     box-sizing: border-box;
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
-/*=====================================
-        IIUI Banner
-======================================*/
-
 .banner{
-
-    width:100%;
 
     margin:-35px -35px 25px -35px;
 
     overflow:hidden;
 
     border-radius:18px 18px 0 0;
+
+    box-shadow:0 6px 20px rgba(0,0,0,.15);
 
 }
 
@@ -29,8 +25,6 @@
     width:100%;
 
     display:block;
-
-    height:auto;
 
 }
 /* =========================

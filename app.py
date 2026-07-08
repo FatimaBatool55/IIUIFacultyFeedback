@@ -86,16 +86,14 @@ def feedback():
         "index.html",
         first_name=first_name
     )
-
 # -----------------------------
 # Submit Feedback
 # -----------------------------
 @app.route("/submit", methods=["POST"])
 def submit():
 
-first_name = request.form["first_name"].strip()
-
-student_name = first_name
+    first_name = request.form["first_name"].strip()
+    student_name = first_name
 
     student_email = session.get("student_email")
 
@@ -109,8 +107,6 @@ student_name = first_name
 
     hide_identity = request.form.get("hide_identity")
 
-    
-
     # Save actual data in database
     save_feedback(
         student_name,
@@ -123,7 +119,7 @@ student_name = first_name
         comments
     )
 
-    # Send thank you email to student
+    # Send thank you email
     try:
         send_thank_you(
             student_email,
@@ -132,7 +128,7 @@ student_name = first_name
     except Exception as e:
         print("THANK YOU EMAIL ERROR:", e)
 
-    # Decide what admin will see
+    # Hide identity in admin email if requested
     admin_name = student_name
     admin_email = student_email
 
@@ -140,7 +136,7 @@ student_name = first_name
         admin_name = "*******"
         admin_email = "*******"
 
-    # Send admin notification
+    # Send admin email
     try:
         send_admin_notification(
             admin_name,
@@ -158,6 +154,8 @@ student_name = first_name
     session.clear()
 
     return redirect("/success")
+
+    
 
 # -----------------------------
 # Success Page
